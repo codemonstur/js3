@@ -161,7 +161,7 @@ public final class S3RequestBuilder {
     // https://tools.ietf.org/html/rfc2616#section-3.3.1
     private static final DateTimeFormatter RFC_2616 = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss O");
 
-    private S3RequestBuilder addAuthorization() {
+    private void addAuthorization() {
         final List<String> headerValues = headers.get("Content-Type");
         final String contentType = headerValues == null ? "" : headerValues.get(0);
         final String contentMD5 = data != null ? encodeBase64(md5(data)) : "";
@@ -174,8 +174,6 @@ public final class S3RequestBuilder {
         header("Date", date);
         header("Authorization", "AWS " + config.username + ":" + auth);
         if (data != null) header("Content-MD5", contentMD5);
-
-        return this;
     }
 
     private String extractS3CustomHeaders() {

@@ -1,4 +1,4 @@
-package js3.pojos;
+package js3.pojos.data;
 
 import java.util.List;
 import java.util.Map;

@@ -5,7 +5,9 @@ import js3.pojos.data.S3Config;
 import js3.pojos.data.S3Object;
 import js3.pojos.error.S3ClientError;
 import js3.pojos.error.S3ServerError;
-import js3.util.XML;
+import xmlparser.XmlStreamReader;
+import xmlparser.utils.Trimming.NativeTrimmer;
+import xmlparser.utils.Trimming.Trim;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -135,12 +137,13 @@ public final class S3RequestBuilder {
         return true;
     }
 
+    private static final Trim trimmer = new NativeTrimmer();
     public List<String> fetchKeys(final String tagname) throws IOException {
         if (response == null) execute();
 
         final S3ResponseParser parser = new S3ResponseParser(tagname);
         try (final InputStreamReader responseData = new InputStreamReader(new ByteArrayInputStream(response.body()))) {
-            XML.toXmlStream(responseData, parser);
+            XmlStreamReader.toXmlStream(responseData, parser, trimmer);
         }
         return parser.getList();
     }

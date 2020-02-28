@@ -1,6 +1,7 @@
 version: 0.1.0
 packaging: jar
 dependencies:
+  - repository: com.github.codemonstur:simplexml:2.7.0
   - repository: junit:junit:4.12
     scope: test
   - repository: org.testcontainers:testcontainers:1.12.5

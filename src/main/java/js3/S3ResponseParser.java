@@ -1,6 +1,6 @@
 package js3;
 
-import js3.util.XML.EventParser;
+import xmlparser.parsing.EventParser;
 
 import java.util.ArrayList;
 import java.util.List;

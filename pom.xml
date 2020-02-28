@@ -138,6 +138,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.github.codemonstur</groupId>
+            <artifactId>simplexml</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>

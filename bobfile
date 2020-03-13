@@ -1,4 +1,5 @@
 version: 0.1.0
+enablePreview: false
 packaging: jar
 dependencies:
   - repository: com.github.codemonstur:simplexml:2.7.0

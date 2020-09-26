@@ -1,28 +1,28 @@
 package js3;
 
-import js3.calls.*;
-import js3.pojos.data.S3Config;
+import js3.actions.*;
 
-import java.net.http.HttpClient;
+import java.net.URI;
 
-import static java.net.http.HttpClient.newHttpClient;
+public interface S3Client extends S3ListBuckets, S3ListObjects, S3GetMetaData, S3GetObject, S3PutObject,
+        S3MakeBucket, S3RemoveBucket, S3RemoveObject, S3CopyObject {
 
-public final class S3Client implements CopyObject, MakeBucket, RemoveBucket, RemoveObject, GetObject,
-        GetMetadata, ListBuckets, ListObjects, PutObject {
-
-    private final S3Config config;
-    private final HttpClient httpClient;
-    public S3Client(final String host, final int port, final String username, final String password) {
-        this.config = new S3Config(host, port, username, password);
-        this.httpClient = newHttpClient();
-    }
-
-    public S3Config getS3Config() {
-        return config;
-    }
-    public HttpClient getHttpClient() {
-        return httpClient;
+    public static S3Client newS3Client(final String endpoint, final String region, final String accessKey, final String secretKey) {
+        final URI endpointUri = URI.create(endpoint);
+        return new S3Client() {
+            public URI getS3Endpoint() {
+                return endpointUri;
+            }
+            public String getS3Region() {
+                return region;
+            }
+            public String getS3AccessKey() {
+                return accessKey;
+            }
+            public String getS3SecretKey() {
+                return secretKey;
+            }
+        };
     }
 
 }
-

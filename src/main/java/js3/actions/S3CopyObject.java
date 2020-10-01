@@ -7,11 +7,11 @@ import java.io.IOException;
 
 public interface S3CopyObject extends S3ClientConfiguration, S3Credentials {
 
-    default void copyObject(final String bucket, final String fromKey, final String toKey) throws IOException {
-        copyObject(bucket, fromKey, bucket, toKey);
+    default void copyS3Object(final String bucket, final String fromKey, final String toKey) throws IOException {
+        copyS3Object(bucket, fromKey, bucket, toKey);
     }
 
-    default void copyObject(final String fromBucket, final String fromKey, final String toBucket, final String toKey) throws IOException {
+    default void copyS3Object(final String fromBucket, final String fromKey, final String toBucket, final String toKey) throws IOException {
         final String pathFromKey = newS3Path(fromBucket, fromKey);
         newS3Request()
             .method("PUT").path(newS3Path(toBucket, toKey))

@@ -13,15 +13,15 @@ import static js3.util.HTTP.readFully;
 
 public interface S3GetObject extends S3Credentials, S3ClientConfiguration {
 
-    default InputStream getObjectDataAsInputStream(final String bucket, final String key) throws IOException {
-        return new ByteArrayInputStream(getObjectData(bucket, key));
+    default InputStream getS3ObjectDataAsInputStream(final String bucket, final String key) throws IOException {
+        return new ByteArrayInputStream(getS3ObjectData(bucket, key));
     }
 
-    default String getObjectDataAsString(final String bucket, final String key) throws IOException {
-        return new String(getObjectData(bucket, key), UTF_8);
+    default String getS3ObjectDataAsString(final String bucket, final String key) throws IOException {
+        return new String(getS3ObjectData(bucket, key), UTF_8);
     }
 
-    default byte[] getObjectData(final String bucket, final String key) throws IOException {
+    default byte[] getS3ObjectData(final String bucket, final String key) throws IOException {
         final HttpURLConnection connection = newS3Request()
             .method("GET").path(newS3Path(bucket, key))
             .execute(getS3ConnectTimeout(), getS3ReadTimeout());

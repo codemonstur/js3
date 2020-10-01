@@ -17,7 +17,7 @@ import static js3.util.HTTP.readFully;
 
 public interface S3ListBuckets extends S3ClientConfiguration, S3Credentials {
 
-    default List<String> listBuckets() throws IOException {
+    default List<String> listS3Buckets() throws IOException {
         final var bucketNames = new ArrayList<String>();
 
         String cursor = null; do {

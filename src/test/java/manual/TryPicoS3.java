@@ -17,7 +17,7 @@ public enum TryPicoS3 {;
 
 //        s3Client.makeBucket("boe");
 //        s3Client.removeBucket("boe");
-        s3Client.copyObject("test", "test.html", "test2.html");
+        s3Client.copyS3Object("test", "test.html", "test2.html");
 //        S3ObjectMetaData test = s3Client.getMetaData("test", "test.html");
 //        System.out.println(test.contentType);
 //        System.out.println(test.etag);
@@ -30,14 +30,14 @@ public enum TryPicoS3 {;
     }
 
     private static void listBuckets(final S3Client pClient) throws IOException {
-        final List<String> buckets = pClient.listBuckets();
+        final List<String> buckets = pClient.listS3Buckets();
         for (final String bucket : buckets) {
             System.out.println(bucket);
         }
     }
 
     private static void listObjects(final S3Client pClient, final String bucketName) throws IOException {
-        final List<S3ObjectMetaData> downloads = pClient.listObjects(bucketName);
+        final List<S3ObjectMetaData> downloads = pClient.listS3Objects(bucketName);
         for (final S3ObjectMetaData item : downloads) {
             System.out.println(item.key);
         }

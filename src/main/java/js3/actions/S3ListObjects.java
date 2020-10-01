@@ -16,11 +16,11 @@ import static js3.util.HTTP.readFully;
 
 public interface S3ListObjects extends S3ClientConfiguration, S3Credentials {
 
-    default List<S3ObjectMetaData> listObjects(final String bucket) throws IOException {
+    default List<S3ObjectMetaData> listS3Objects(final String bucket) throws IOException {
         return internalListObjects(bucket, "");
     }
 
-    default List<S3ObjectMetaData> listObjects(final String bucket, final String prefix) throws IOException {
+    default List<S3ObjectMetaData> listS3Objects(final String bucket, final String prefix) throws IOException {
         return internalListObjects(bucket, "&prefix="+encodeURI(prefix, true));
     }
 

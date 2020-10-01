@@ -11,7 +11,7 @@ import static js3.util.HTTP.getFirstFrom;
 
 public interface S3GetMetaData extends S3ClientConfiguration, S3Credentials {
 
-    default S3ObjectMetaData getMetaData(final String bucket, final String key) throws IOException {
+    default S3ObjectMetaData getS3ObjectMetaData(final String bucket, final String key) throws IOException {
         final HttpURLConnection connection = newS3Request()
             .method("HEAD").path(newS3Path(bucket, key))
             .execute(getS3ConnectTimeout(), getS3ReadTimeout());

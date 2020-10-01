@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface S3RemoveBucket extends S3ClientConfiguration, S3Credentials {
 
-    default void removeBucket(final String bucket) throws IOException {
+    default void removeS3Bucket(final String bucket) throws IOException {
         newS3Request()
             .method("DELETE").path("/" + bucket)
             .execute(getS3ConnectTimeout(), getS3ReadTimeout());

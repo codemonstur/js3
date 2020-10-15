@@ -2,7 +2,7 @@ version: 1.0.0
 enablePreview: false
 packaging: jar
 dependencies:
-  - repository: junit:junit:4.12
+  - repository: junit:junit:4.13.1
     scope: test
 
 build

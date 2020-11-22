@@ -18,6 +18,13 @@ public enum TryPicoS3 {;
 //        s3Client.makeBucket("boe");
 //        s3Client.removeBucket("boe");
         s3Client.copyS3Object("test", "test.html", "test2.html");
+
+        boolean images = s3Client.existsS3Bucket("images");
+        System.out.println(images);
+        boolean something = s3Client.existsS3Bucket("aoshdasdhaskdhsaid");
+        System.out.println(something);
+
+
 //        S3ObjectMetaData test = s3Client.getMetaData("test", "test.html");
 //        System.out.println(test.contentType);
 //        System.out.println(test.etag);

@@ -14,12 +14,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 public enum S3ResponseParser {;
 
     public static Document toXmlDocument(final byte[] xml) throws IOException {
         try (final InputStream inputStream = new ByteArrayInputStream(xml)) {
-            final Document document = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(inputStream);
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            // s3 xml never contains a doctype; refusing them keeps hostile responses
+            // from triggering entity expansion or external fetches (xxe/ssrf)
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            final Document document = factory.newDocumentBuilder().parse(inputStream);
             document.normalize();
             return document;
         } catch (ParserConfigurationException | SAXException e) {
@@ -28,12 +35,17 @@ public enum S3ResponseParser {;
     }
 
     public static List<String> toBucketsList(final Document s3XmlDocument) {
-        final NodeList elements = s3XmlDocument.getDocumentElement().getElementsByTagName("Buckets").item(0).getChildNodes();
+        final var bucketsElement = s3XmlDocument.getDocumentElement().getElementsByTagName("Buckets").item(0);
+        if (!(bucketsElement instanceof Element)) return emptyList();
+
+        final NodeList elements = ((Element) bucketsElement).getChildNodes();
         final List<String> bucketNames = new ArrayList<>(elements.getLength());
         for (int i = 0; i < elements.getLength(); i++) {
-            final Element element = (Element) elements.item(i);
+            // pretty-printed xml puts whitespace text nodes between the Bucket elements
+            final var node = elements.item(i);
+            if (!(node instanceof Element)) continue;
 
-            bucketNames.add(element.getElementsByTagName("Name").item(0).getTextContent());
+            bucketNames.add(((Element) node).getElementsByTagName("Name").item(0).getTextContent());
         }
         return bucketNames;
     }

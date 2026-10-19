@@ -13,10 +13,11 @@ public interface S3CopyObject extends S3ClientConfiguration, S3Credentials {
 
     default void copyS3Object(final String fromBucket, final String fromKey, final String toBucket, final String toKey) throws IOException {
         final String pathFromKey = newS3Path(fromBucket, fromKey);
-        newS3Request()
+        final var connection = newS3Request()
             .method("PUT").path(newS3Path(toBucket, toKey))
             .header("x-amz-copy-source", pathFromKey)
             .execute(getS3ConnectTimeout(), getS3ReadTimeout());
+        connection.disconnect();
     }
 
 }

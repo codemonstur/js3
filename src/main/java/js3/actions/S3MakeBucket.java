@@ -8,9 +8,10 @@ import java.io.IOException;
 public interface S3MakeBucket extends S3ClientConfiguration, S3Credentials {
 
     default void makeS3Bucket(final String bucket) throws IOException {
-        newS3Request()
+        final var connection = newS3Request()
             .method("PUT").path("/" + bucket)
             .execute(getS3ConnectTimeout(), getS3ReadTimeout());
+        connection.disconnect();
     }
 
 }

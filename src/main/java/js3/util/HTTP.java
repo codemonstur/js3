@@ -21,7 +21,13 @@ public enum HTTP {;
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
             char ch = input.charAt(i);
-            if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')
+            if (Character.isHighSurrogate(ch) && i + 1 < input.length()
+                    && Character.isLowSurrogate(input.charAt(i + 1))) {
+                // surrogate pairs must be encoded as one code point, encoding each half
+                // separately would produce the wrong (and colliding) bytes
+                result.append(toUrlHexUTF8(ch, input.charAt(i + 1)));
+                i++;
+            } else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')
                     || (ch >= '0' && ch <= '9') || ch == '_' || ch == '-' || ch == '~' || ch == '.') {
                 result.append(ch);
             } else if (ch == '/') {
@@ -34,7 +40,14 @@ public enum HTTP {;
     }
 
     private static String toUrlHexUTF8(final char ch) {
-        final byte[] raw = ("" + ch).getBytes(UTF_8);
+        return toUrlHexUTF8(("" + ch).getBytes(UTF_8));
+    }
+
+    private static String toUrlHexUTF8(final char high, final char low) {
+        return toUrlHexUTF8(new String(new char[]{high, low}).getBytes(UTF_8));
+    }
+
+    private static String toUrlHexUTF8(final byte[] raw) {
         final StringBuilder hexString = new StringBuilder();
         for (final byte rawByte : raw) {
             hexString.append("%").append(format("%02X", rawByte & 0XFF));
@@ -59,6 +72,13 @@ public enum HTTP {;
     }
 
     public static String getFirstFrom(final Map<String, List<String>> headers, final String name) {
-        return headers.containsKey(name) ? headers.get(name).get(0) : null;
+        // getHeaderFields() preserves the casing the server sent, so lookup must be case-insensitive
+        for (final var entry : headers.entrySet()) {
+            if (entry.getKey() != null && entry.getKey().equalsIgnoreCase(name)) {
+                final var values = entry.getValue();
+                return values == null || values.isEmpty() ? null : values.get(0);
+            }
+        }
+        return null;
     }
 }

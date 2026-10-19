@@ -73,10 +73,13 @@ public final class S3Request {
             connection.setReadTimeout(readTimeout);
             connection.setRequestMethod(method);
             remapHeaders(headers).forEach(connection::setRequestProperty);
-            if (body != null && body.length > 0) {
+            // empty PUT/POST must also open the output stream: that makes the JDK send
+            // "Content-Length: 0", which the signature above includes as a signed header
+            final boolean hasBody = body != null && body.length > 0;
+            if (hasBody || method.equals("PUT") || method.equals("POST")) {
                 connection.setDoOutput(true);
                 try (final OutputStream out = connection.getOutputStream()) {
-                    out.write(body);
+                    if (hasBody) out.write(body);
                 }
             }
 
@@ -123,7 +126,8 @@ public final class S3Request {
     private Map<String, String> getCanonicalHeaders() {
         final var map = new TreeMap<String, String>();
         for (final var entry : headers.entrySet()) {
-            final String value = join(";", entry.getValue()).replaceAll(" +", " ");
+            // aws trims leading/trailing whitespace of header values before signing
+            final String value = join(";", entry.getValue()).replaceAll(" +", " ").trim();
             map.put(entry.getKey().toLowerCase().trim(), value);
         }
         return map;
@@ -138,7 +142,10 @@ public final class S3Request {
     }
 
     private String newHostHeader() {
-        return port == -1 ? host : host + ":" + port;
+        // the Host header the JDK puts on the wire never carries the default port
+        // of the scheme, so it must not be included in the signed value either
+        final int defaultPort = "https".equals(protocol) ? 443 : 80;
+        return (port == -1 || port == defaultPort) ? host : host + ":" + port;
     }
 
     private String newSignedHeaders() {

@@ -11,12 +11,28 @@ import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static js3.internal.Constants.BLOCK_SIZE;
 
+/**
+ * The {@code HTTP} enum.
+ */
 public enum HTTP {;
 
+    /**
+     * Returns the result of {@code encodeURI}.
+     *
+     * @param input the input
+     * @return the result
+     */
     public static String encodeURI(final CharSequence input) {
         return encodeURI(input, true);
     }
 
+    /**
+     * Returns the result of {@code encodeURI}.
+     *
+     * @param input the input
+     * @param encodeSlash the encode slash
+     * @return the result
+     */
     public static String encodeURI(final CharSequence input, final boolean encodeSlash) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
@@ -55,11 +71,25 @@ public enum HTTP {;
         return hexString.toString().toUpperCase();
     }
 
+    /**
+     * Returns the result of {@code isSuccessful}.
+     *
+     * @param connection the connection
+     * @return whether the condition holds
+     * @throws IOException if the operation fails
+     */
     public static boolean isSuccessful(final HttpURLConnection connection) throws IOException {
         final int responseCode = connection.getResponseCode();
         return responseCode >= 200 && responseCode <= 299;
     }
 
+    /**
+     * Returns the result of {@code readFully}.
+     *
+     * @param input the input
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     public static byte[] readFully(final InputStream input) throws IOException {
         final byte[] buffer = new byte[BLOCK_SIZE];
 
@@ -71,6 +101,13 @@ public enum HTTP {;
         }
     }
 
+    /**
+     * Returns the result of {@code getFirstFrom}.
+     *
+     * @param headers the headers
+     * @param name the name
+     * @return the result
+     */
     public static String getFirstFrom(final Map<String, List<String>> headers, final String name) {
         // getHeaderFields() preserves the casing the server sent, so lookup must be case-insensitive
         for (final var entry : headers.entrySet()) {

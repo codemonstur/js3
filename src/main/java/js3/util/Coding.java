@@ -1,7 +1,16 @@
 package js3.util;
 
+/**
+ * The {@code Coding} enum.
+ */
 public enum Coding {;
 
+    /**
+     * Returns the result of {@code encodeHex}.
+     *
+     * @param data the data
+     * @return the result
+     */
     public static String encodeHex(final byte[] data) {
         final StringBuilder hexString = new StringBuilder();
         for (final byte rawByte : data) {

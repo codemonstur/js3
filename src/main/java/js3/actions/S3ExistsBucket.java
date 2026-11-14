@@ -6,8 +6,17 @@ import js3.S3Credentials;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
+/**
+ * The {@code S3ExistsBucket} interface.
+ */
 public interface S3ExistsBucket extends S3ClientConfiguration, S3Credentials {
 
+    /**
+     * Returns the result of {@code existsS3Bucket}.
+     *
+     * @param bucket the bucket
+     * @return whether the condition holds
+     */
     default boolean existsS3Bucket(final String bucket) {
         try {
             // execute() throws for any non-successful status, including 404

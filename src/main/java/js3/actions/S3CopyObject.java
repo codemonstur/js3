@@ -5,12 +5,32 @@ import js3.S3Credentials;
 
 import java.io.IOException;
 
+/**
+ * The {@code S3CopyObject} interface.
+ */
 public interface S3CopyObject extends S3ClientConfiguration, S3Credentials {
 
+    /**
+     * Performs the {@code copyS3Object} operation.
+     *
+     * @param bucket the bucket
+     * @param fromKey the from key
+     * @param toKey the to key
+     * @throws IOException if the operation fails
+     */
     default void copyS3Object(final String bucket, final String fromKey, final String toKey) throws IOException {
         copyS3Object(bucket, fromKey, bucket, toKey);
     }
 
+    /**
+     * Performs the {@code copyS3Object} operation.
+     *
+     * @param fromBucket the from bucket
+     * @param fromKey the from key
+     * @param toBucket the to bucket
+     * @param toKey the to key
+     * @throws IOException if the operation fails
+     */
     default void copyS3Object(final String fromBucket, final String fromKey, final String toBucket, final String toKey) throws IOException {
         final String pathFromKey = newS3Path(fromBucket, fromKey);
         final var connection = newS3Request()

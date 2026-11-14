@@ -11,9 +11,18 @@ import static js3.internal.S3ResponseParser.toBucketsList;
 import static js3.internal.S3ResponseParser.toXmlDocument;
 import static js3.util.HTTP.readFully;
 
+/**
+ * The {@code S3ListBuckets} interface.
+ */
 public interface S3ListBuckets extends S3ClientConfiguration, S3Credentials {
 
     // ListAllMyBuckets has no pagination: the service returns every bucket in one response
+    /**
+     * Returns the result of {@code listS3Buckets}.
+     *
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     default List<String> listS3Buckets() throws IOException {
         final HttpURLConnection connection = newS3Request()
             .method("GET").path("/")

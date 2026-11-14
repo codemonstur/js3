@@ -8,16 +8,40 @@ import java.security.NoSuchAlgorithmException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * The {@code Crypto} enum.
+ */
 public enum Crypto {;
 
+    /**
+     * Returns the result of {@code hmacSha256}.
+     *
+     * @param data the data
+     * @param key the key
+     * @return the result
+     */
     public static byte[] hmacSha256(final String data, final byte[] key) {
         return hmacSha256(data.getBytes(UTF_8), key);
     }
 
+    /**
+     * Returns the result of {@code hmacSha256}.
+     *
+     * @param data the data
+     * @param key the key
+     * @return the result
+     */
     public static byte[] hmacSha256(final String data, final String key) {
         return hmacSha256(data.getBytes(UTF_8), key.getBytes(UTF_8));
     }
 
+    /**
+     * Returns the result of {@code hmacSha256}.
+     *
+     * @param data the data
+     * @param key the key
+     * @return the result
+     */
     public static byte[] hmacSha256(final byte[] data, final byte[] key) {
         try {
             final Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
@@ -29,9 +53,21 @@ public enum Crypto {;
         }
     }
 
+    /**
+     * Returns the result of {@code sha256}.
+     *
+     * @param data the data
+     * @return the result
+     */
     public static byte[] sha256(final String data) {
         return sha256(data.getBytes(UTF_8));
     }
+    /**
+     * Returns the result of {@code sha256}.
+     *
+     * @param data the data
+     * @return the result
+     */
     public static byte[] sha256(final byte[] data) {
         try {
             return MessageDigest.getInstance("SHA-256").digest(data);

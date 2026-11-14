@@ -18,6 +18,9 @@ import static js3.util.HTTP.isSuccessful;
 import static js3.util.Time.toIso8601;
 import static js3.util.Time.toShortDate;
 
+/**
+ * The {@code S3Request} class.
+ */
 public final class S3Request {
 
     private final String region;
@@ -33,6 +36,14 @@ public final class S3Request {
     private Map<String, List<String>> headers = new HashMap<>();
     private byte[] body = new byte[0];
 
+    /**
+     * Creates a new instance.
+     *
+     * @param endpoint the endpoint
+     * @param region the region
+     * @param accessKey the access key
+     * @param secretKey the secret key
+     */
     public S3Request(final URI endpoint, final String region, final String accessKey, final String secretKey) {
         this.protocol = endpoint.getScheme();
         this.host = endpoint.getHost();
@@ -42,28 +53,67 @@ public final class S3Request {
         this.secretKey = secretKey;
     }
 
+    /**
+     * Returns the result of {@code method}.
+     *
+     * @param method the method
+     * @return the result
+     */
     public S3Request method(final String method) {
         this.method = method;
         return this;
     }
+    /**
+     * Returns the result of {@code path}.
+     *
+     * @param path the path
+     * @return the result
+     */
     public S3Request path(final String path) {
         this.path = path;
         return this;
     }
+    /**
+     * Returns the result of {@code query}.
+     *
+     * @param query the query
+     * @return the result
+     */
     public S3Request query(final String query) {
         this.query = query;
         return this;
     }
+    /**
+     * Returns the result of {@code header}.
+     *
+     * @param key the key
+     * @param value the value
+     * @return the result
+     */
     public S3Request header(final String key, final String value) {
         if (value == null) return this;
         headers.put(key, Collections.singletonList(value));
         return this;
     }
+    /**
+     * Returns the result of {@code body}.
+     *
+     * @param data the data
+     * @return the result
+     */
     public S3Request body(final byte[] data) {
         this.body = data;
         return this;
     }
 
+    /**
+     * Returns the result of {@code execute}.
+     *
+     * @param connectTimeout the connect timeout
+     * @param readTimeout the read timeout
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     public HttpURLConnection execute(final int connectTimeout, final int readTimeout) throws IOException {
         addSignatureHeader();
         final HttpURLConnection connection = (HttpURLConnection) newURL().openConnection();

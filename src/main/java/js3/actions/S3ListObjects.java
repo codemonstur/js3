@@ -14,12 +14,30 @@ import static js3.internal.S3ResponseParser.*;
 import static js3.util.HTTP.encodeURI;
 import static js3.util.HTTP.readFully;
 
+/**
+ * The {@code S3ListObjects} interface.
+ */
 public interface S3ListObjects extends S3ClientConfiguration, S3Credentials {
 
+    /**
+     * Returns the result of {@code listS3Objects}.
+     *
+     * @param bucket the bucket
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     default List<S3ObjectMetaData> listS3Objects(final String bucket) throws IOException {
         return internalListObjects(bucket, "");
     }
 
+    /**
+     * Returns the result of {@code listS3Objects}.
+     *
+     * @param bucket the bucket
+     * @param prefix the prefix
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     default List<S3ObjectMetaData> listS3Objects(final String bucket, final String prefix) throws IOException {
         return internalListObjects(bucket, "&prefix="+encodeURI(prefix, true));
     }

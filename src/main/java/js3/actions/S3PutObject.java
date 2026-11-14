@@ -6,13 +6,34 @@ import js3.model.PutObjectOptions;
 
 import java.io.IOException;
 
+/**
+ * The {@code S3PutObject} interface.
+ */
 public interface S3PutObject extends S3ClientConfiguration, S3Credentials {
 
+    /**
+     * Performs the {@code putS3Object} operation.
+     *
+     * @param bucket the bucket
+     * @param key the key
+     * @param data the data
+     * @param contentType the content type
+     * @throws IOException if the operation fails
+     */
     default void putS3Object(final String bucket, final String key, final byte[] data, final String contentType)
             throws IOException {
         putS3Object(bucket, key, data, new PutObjectOptions.Builder().withContentType(contentType).build());
     }
 
+    /**
+     * Performs the {@code putS3Object} operation.
+     *
+     * @param bucket the bucket
+     * @param key the key
+     * @param data the data
+     * @param putObjectOptions the put object options
+     * @throws IOException if the operation fails
+     */
     default void putS3Object(final String bucket, final String key, final byte[] data,
                            final PutObjectOptions putObjectOptions) throws IOException {
         newS3Request()

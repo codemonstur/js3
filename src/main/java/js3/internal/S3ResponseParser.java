@@ -16,8 +16,18 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 
+/**
+ * The {@code S3ResponseParser} enum.
+ */
 public enum S3ResponseParser {;
 
+    /**
+     * Returns the result of {@code toXmlDocument}.
+     *
+     * @param xml the xml
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     public static Document toXmlDocument(final byte[] xml) throws IOException {
         try (final InputStream inputStream = new ByteArrayInputStream(xml)) {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -34,6 +44,12 @@ public enum S3ResponseParser {;
         }
     }
 
+    /**
+     * Returns the result of {@code toBucketsList}.
+     *
+     * @param s3XmlDocument the s3 xml document
+     * @return the result
+     */
     public static List<String> toBucketsList(final Document s3XmlDocument) {
         final var bucketsElement = s3XmlDocument.getDocumentElement().getElementsByTagName("Buckets").item(0);
         if (!(bucketsElement instanceof Element)) return emptyList();
@@ -50,6 +66,12 @@ public enum S3ResponseParser {;
         return bucketNames;
     }
 
+    /**
+     * Returns the result of {@code toObjectsList}.
+     *
+     * @param s3XmlDocument the s3 xml document
+     * @return the result
+     */
     public static List<S3ObjectMetaData> toObjectsList(final Document s3XmlDocument) {
         final NodeList elements = s3XmlDocument.getDocumentElement().getElementsByTagName("Contents");
         final List<S3ObjectMetaData> objectList = new ArrayList<>(elements.getLength());
@@ -66,6 +88,12 @@ public enum S3ResponseParser {;
         return objectList;
     }
 
+    /**
+     * Returns the result of {@code getNextContinuationToken}.
+     *
+     * @param s3XmlDocument the s3 xml document
+     * @return the result
+     */
     public static String getNextContinuationToken(final Document s3XmlDocument) {
         /*
         xml section describing this looks like

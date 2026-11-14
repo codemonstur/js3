@@ -13,6 +13,11 @@ public class PutObjectOptions {
         this.contentType = contentType;
     }
 
+    /**
+     * Returns the content type.
+     *
+     * @return the result
+     */
     public String getContentType() {
         return this.contentType;
     }
@@ -21,6 +26,11 @@ public class PutObjectOptions {
         this.serverSideEncryption = serverSideEncryption;
     }
 
+    /**
+     * Returns the server side encryption.
+     *
+     * @return the result
+     */
     public String getServerSideEncryption() {
         return serverSideEncryption;
     }
@@ -29,6 +39,11 @@ public class PutObjectOptions {
         this.serverSideEncryptionKeyId = serverSideEncryptionKeyId;
     }
 
+    /**
+     * Returns the server side encryption key id.
+     *
+     * @return the result
+     */
     public String getServerSideEncryptionKeyId() {
         return serverSideEncryptionKeyId;
     }
@@ -38,17 +53,26 @@ public class PutObjectOptions {
      */
     public static class Builder {
 
+        /**
+         * The {@code DEFAULT_CONTENT_TYPE} constant.
+         */
         public static final String DEFAULT_CONTENT_TYPE = "application/octet-stream";
         /**
          * Indicates servers side encryption with s3 master key.
          */
         public static final String SERVER_SIDE_ENCRYPTION_S3 = "AES256";
+        /**
+         * The {@code SERVER_SIDE_ENCRYPTION_KMS} constant.
+         */
         public static final String SERVER_SIDE_ENCRYPTION_KMS = "aws:kms";
 
         private String contentType = DEFAULT_CONTENT_TYPE;
         private String serverSideEncryption;
         private String serverSideEncryptionKeyId;
 
+        /**
+         * Creates a new instance.
+         */
         public Builder(){}
 
         /**
@@ -81,6 +105,11 @@ public class PutObjectOptions {
             return this;
         }
 
+        /**
+         * Returns the result of {@code build}.
+         *
+         * @return the result
+         */
         public PutObjectOptions build() {
             final PutObjectOptions putObjectOptions = new PutObjectOptions();
             putObjectOptions.setContentType(this.contentType);
@@ -95,4 +124,10 @@ public class PutObjectOptions {
         }
     }
 
+
+    /**
+     * Creates a new instance.
+     */
+    public PutObjectOptions() {
+    }
 }

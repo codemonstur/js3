@@ -1,0 +1,9 @@
+1.2.0
+
+Treat ListAllMyBuckets responses as unpaginated
+Disconnect connections after copy, make-bucket and remove operations
+Send a body for PUT and POST requests even when it is empty
+Use the default port when constructing the Host header
+Disable XML external entities when parsing responses
+Handle surrogate pairs when URL-encoding
+Make header lookup case-insensitive

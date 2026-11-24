@@ -51,7 +51,7 @@ from one interface per action in `js3.actions`:
 <dependency>
   <groupId>com.github.codemonstur</groupId>
   <artifactId>js3</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
